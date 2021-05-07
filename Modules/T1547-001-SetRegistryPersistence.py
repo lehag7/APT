@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 ## Author: lehag
 ## Code: T1547-001-SetRegistryPersistence.py
 """
