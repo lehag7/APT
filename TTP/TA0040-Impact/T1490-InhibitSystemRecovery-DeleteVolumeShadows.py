@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 ## Author: lehag
-## Code: T1490-DeleteVolumeShadows.py
+## Code: T1490-InhibitSystemRecovery-DeleteVolumeShadows.py
 """
 	Description:
 		It deletes all volume shadow copies on a system.
