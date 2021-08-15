@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 ## Author: lehag
-## Code: T1548-BypassUAC.py
+## Code: T1548-002-BypassUserAccountControl.py
 import os
 import sys
 import ctypes
