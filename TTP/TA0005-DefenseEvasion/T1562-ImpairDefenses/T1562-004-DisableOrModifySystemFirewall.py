@@ -1,5 +1,5 @@
 ## Author: lehag
-## Code: T1562-004-DisableSystemFirewall.py
+## Code: T1562-004-DisableOrModifySystemFirewall.py
 """
 	Description:
 		It disables the system firewall.
