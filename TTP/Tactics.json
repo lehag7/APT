@@ -1,0 +1,16 @@
+{
+    "Tactic": [
+        {
+            "ID": "TA0005",
+            "Name": "Defense Evasion",
+            "Description": "The adversary is trying to avoid being detected.",
+            "Path": "TTP/TA0005-DefenseEvasion/TA0005-DefenseEvasion.json"
+        },
+        {
+            "ID": "TA0006",
+            "Name": "Credential Access",
+            "Description": "The adversary is trying to steal account names and passwords.",
+            "Path": "TTP/TA0006-CredentialAccess/TA0006-CredentialAccess.json"
+        }
+    ]    
+}
