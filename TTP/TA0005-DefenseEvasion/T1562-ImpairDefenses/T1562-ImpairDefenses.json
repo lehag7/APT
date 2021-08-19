@@ -1,0 +1,43 @@
+{
+    "SubTechnique": [
+        {
+            "ID": "T1562.001",
+            "Name": "Disable or Modify Tool",
+            "Description": "Adversaries may disable security tools to avoid possible detection of their tools and activities.",
+            "Procedure": [
+                {
+                    "ID": "000",
+                    "Process": "powershell.exe",
+                    "Commandline": ""
+                },
+                {
+                    "ID": "001",
+                    "Process": "wmic.exe",
+                    "Commandline": ""
+                }
+            ]
+        },
+        {
+            "ID": "T1562.004",
+            "Name": "Disable or Modify System Firewall",
+            "Description": "Adversaries may disable or modify system firewalls in order to bypass controls limiting network usage. ",
+            "Procedure": [
+                {
+                    "ID": "000",
+                    "Process": "wmic.exe",
+                    "Commandline": "/namespace:\\\\root\\securitycenter2 path antivirusproduct"
+                },
+                {
+                    "ID": "001",
+                    "Process": "powershell.exe",
+                    "Commandline": "Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntivirusProduct"
+                },
+                {
+                    "ID": "002",
+                    "Process": "reg.exe",
+                    "Commandline": "query \"HKLM\\SOFTWARE\\Microsoft\\Security Center\\Provider\\Av\" /s"
+                }
+            ]
+        }
+    ]    
+}
