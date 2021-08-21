@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 ## Author: lehag
 ## Code: APT.py
 """
@@ -10,69 +11,92 @@ import subprocess
 import sys
 
 class APT:
-    if __name__ == "__main__":
+    def __init__(self):
+        self.TacticsPath = "TTP/Tactics.json";
+        self.TacticsData = "";
+        self.TacticID = "";
+        self.TechniquesData = "";
+        self.TechniqueID = "";
+        self.SubTechniqueID = "";
+        self.SubTechniquesData = "";
+        self.ProcedureID = "";
+
+    def displayDescription(self):
         print("""
-                 █████╗    ██████╗ ████████╗
-                ██╔══██╗   ██╔══██╗╚══██╔══╝
-                ███████║   ██████╔╝   ██║   
-                ██╔══██║   ██╔═══╝    ██║   
-                ██║  ██║██╗██║██╗     ██║   
-                ╚═╝  ╚═╝╚═╝╚═╝╚═╝     ╚═╝   : Advanced Persistence Testing.
+             █████╗ ██████╗ ██╗   ██╗ █████╗ ███╗   ██╗ ██████╗███████╗██████╗                    
+            ██╔══██╗██╔══██╗██║   ██║██╔══██╗████╗  ██║██╔════╝██╔════╝██╔══██╗                   
+            ███████║██║  ██║██║   ██║███████║██╔██╗ ██║██║     █████╗  ██║  ██║                   
+            ██╔══██║██║  ██║╚██╗ ██╔╝██╔══██║██║╚██╗██║██║     ██╔══╝  ██║  ██║                   
+            ██║  ██║██████╔╝ ╚████╔╝ ██║  ██║██║ ╚████║╚██████╗███████╗██████╔╝                   
+            ╚═╝  ╚═╝╚═════╝   ╚═══╝  ╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝╚══════╝╚═════╝                                                                          
+            ██████╗ ███████╗██████╗ ███████╗██╗███████╗████████╗███████╗███╗   ██╗ ██████╗███████╗
+            ██╔══██╗██╔════╝██╔══██╗██╔════╝██║██╔════╝╚══██╔══╝██╔════╝████╗  ██║██╔════╝██╔════╝
+            ██████╔╝█████╗  ██████╔╝███████╗██║███████╗   ██║   █████╗  ██╔██╗ ██║██║     █████╗  
+            ██╔═══╝ ██╔══╝  ██╔══██╗╚════██║██║╚════██║   ██║   ██╔══╝  ██║╚██╗██║██║     ██╔══╝  
+            ██║     ███████╗██║  ██║███████║██║███████║   ██║   ███████╗██║ ╚████║╚██████╗███████╗
+            ╚═╝     ╚══════╝╚═╝  ╚═╝╚══════╝╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═══╝ ╚═════╝╚══════╝                                                                          
+            ████████╗███████╗███████╗████████╗██╗███╗   ██╗ ██████╗                               
+            ╚══██╔══╝██╔════╝██╔════╝╚══██╔══╝██║████╗  ██║██╔════╝                               
+               ██║   █████╗  ███████╗   ██║   ██║██╔██╗ ██║██║  ███╗                              
+               ██║   ██╔══╝  ╚════██║   ██║   ██║██║╚██╗██║██║   ██║                              
+               ██║   ███████╗███████║   ██║   ██║██║ ╚████║╚██████╔╝                              
+               ╚═╝   ╚══════╝╚══════╝   ╚═╝   ╚═╝╚═╝  ╚═══╝ ╚═════╝
         """);
         print("[+] Description: This project (WIP) aims to be a framework composed of modules that allow blue teams to test their threat detection capabilities in their environments by emulating the Tactics, Techniques and Procedures (TTP) followed by an adversary based on MITRE ATT&CK.");
-        print("[+] Author: lehag\n")
-
-        ## Read the Tactics
+        print("[+] Author: lehag\n");
+    
+    def loadTactics(self):
         print("[+] TACTICS");
-        with open("TTP/Tactics.json") as fd:
-            tactics = json.load(fd);
-            for i in tactics["Tactic"]:
+        with open(self.TacticsPath) as fd:
+            self.TacticsData = json.load(fd);
+            for i in self.TacticsData["Tactic"]:
                 print("\t" + i["ID"] + " - " + i["Name"]);
-        id = input("\t[>] Select the Tactic-ID you wish to test in your environment: ");
+        self.TacticID = input("\tTTP> Select the Tactic-ID: ");
 
-        ## Read the Techniques
-        for i in tactics["Tactic"]:
-            if i["ID"] == id:
+    def loadTechniques(self):
+        for i in self.TacticsData["Tactic"]:
+            if i["ID"] == self.TacticID:
                 break;
         print("[+] TECHNIQUES");
-        print("\t" + i["ID"] + " - " + i["Name"]);
-        print("\tDescription: " + i["Description"] + "\n");
         with open(i["Path"]) as fd:
-            tech = json.load(fd);
-            for i in tech["Technique"]:
+            self.TechniquesData = json.load(fd);
+            for i in self.TechniquesData["Technique"]:
                 print("\t" + i["ID"] + " - " + i["Name"]);
-        id = input("\t[>] Select the Technique-ID you wish to test in your environment: ");
+        self.TechniqueID = input("\tTTP>" + self.TacticID + "> Select the Technique-ID: ");
 
-        ## Read the SubTechniques
-        for i in tech["Technique"]:
-            if i["ID"] == id:
+    def loadSubTechniques(self):
+        for i in self.TechniquesData["Technique"]:
+            if i["ID"] == self.TechniqueID:
                 break;
         print("[+] SUBTECHNIQUES");
-        print("\t" + i["ID"] + " - " + i["Name"]);
-        print("\tDescription: " + i["Description"] + "\n");
         with open(i["Path"]) as fd:
-            tech = json.load(fd);
-            for i in tech["SubTechnique"]:
+            self.SubTechniquesData = json.load(fd);
+            for i in self.SubTechniquesData["SubTechnique"]:
                 print("\t" + i["ID"] + " - " + i["Name"]);
-        id = input("\t[>] Select the SubTechnique-ID you wish to test in your environment: ");
+        self.SubTechniqueID = input("\tTTP>" + self.TacticID + ">" + self.TechniqueID + "> Select the SubTechnique-ID: ");
 
-        ## Read the Procedure
-        for i in tech["SubTechnique"]:
+    def loadProcedures(self):
+        for i in self.SubTechniquesData["SubTechnique"]:
             if i["ID"] == id:
                 break;
         print("[+] PROCEDURES");
-        print("\t" + i["ID"] + " - " + i["Name"]);
-        print("\tDescription: " + i["Description"] + "\n");
         for j in i["Procedure"]:
             print("\t" + j["ID"] + " - " + j["Process"] + " " + j["Commandline"]);
-        id = input("\t[>] Select the Procedure-ID you wish to test in your environment: ");
-        
-        ## Execute the Procedure
+        self.ProcedureID = input("\tTTP>" + self.TacticID + ">" + self.TechniqueID + ">" + self.SubTechniqueID + "> Select the Procedure-ID: ");
+
         for j in i["Procedure"]:
-            if j["ID"] == id:
+            if j["ID"] == self.ProcedureID:
                 break;
         print("[...] Executing the TTP.");
         process = j["Process"];
         commandline = j["Commandline"];
         args = process + " " + commandline; 
         result = subprocess.run(args);
+
+if __name__ == "__main__":
+    apt = APT();
+    apt.displayDescription();
+    apt.loadTactics();
+    apt.loadTechniques();
+    apt.loadSubTechniques();
+    apt.loadProcedures();
