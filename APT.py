@@ -12,7 +12,8 @@ import sys
 
 class APT:
     def __init__(self):
-        self.TacticsPath = "TTP/Tactics.json";
+        self.TTP = "TTP.json";
+        self.TTPData = "";
         self.TacticsData = "";
         self.TacticID = "";
         self.TechniquesData = "";
@@ -32,29 +33,37 @@ class APT:
     
     def loadTactics(self):
         print("[+] TACTICS");
-        with open(self.TacticsPath) as fd:
-            self.TacticsData = json.load(fd);
-            for i in self.TacticsData["Tactic"]:
-                print("\t" + i["ID"] + " - " + i["Name"]);
+        with open(self.TTP) as fd:
+            self.TTPData = json.load(fd);
+        
+        for id in self.TTPData:
+            print("\t" + id + " : " + self.TTPData[id]["Name"]);
         print("\tE - Exit");
         self.TacticID = input("\n\tTTP> ");
+        return self.TacticID;
 
-    def loadTechniques(self):
-        for i in self.TacticsData["Tactic"]:
-            if i["ID"] == self.TacticID:
-                break;
+    def loadTechniques(self, TacticID):
         print("[+] TECHNIQUES");
-        with open(i["Path"]) as fd:
-            self.TechniquesData = json.load(fd);
-            for i in self.TechniquesData["Technique"]:
-                print("\t" + i["ID"] + " - " + i["Name"]);
-        self.TechniqueID = input("\n\tTTP>" + self.TacticID + "> Select the Technique-ID: ");
 
-    def loadSubTechniques(self):
+        for id in self.TTPData[self.TacticID]["Technique"]:
+            print("\t" + id + " : " + self.TTPData[self.TacticID]["Technique"][id]["Name"]);
+        print("\tE - Exit");
+        self.TechniqueID = input("\n\tTTP>" + self.TacticID + ">");
+        return self.TechniqueID;
+
+    def loadSubTechniques(self, TechniqueID):
         for i in self.TechniquesData["Technique"]:
             if i["ID"] == self.TechniqueID:
                 break;
         print("[+] SUBTECHNIQUES");
+        for i in self.TacticsData["Tactic"]:
+            if(i["ID"] == TacticID):
+                for j in i["Technique"]:
+                    if(j["ID"] == TechniqueID):
+                        for k in j["Subtechnique"]:
+                            print("\t" + j["ID"] + " - " + j["Name"]);
+
+
         with open(i["Path"]) as fd:
             self.SubTechniquesData = json.load(fd);
             for i in self.SubTechniquesData["SubTechnique"]:
@@ -83,7 +92,16 @@ if __name__ == "__main__":
     apt = APT();
     apt.displayDescription();
     while(True):
-        apt.loadTactics();
-        apt.loadTechniques();
-        apt.loadSubTechniques();
-        apt.loadProcedures();
+        TacticID = apt.loadTactics();
+        if(TacticID != "E"):
+            TechniqueID = apt.loadTechniques(TacticID);
+            exit(0);
+            if(TechniqueID != "E"):
+                SubTechniqueID = 3;
+                if(SubTechniqueID == None):
+                    apt.loadSubTechniques();
+                    apt.loadProcedures();
+            else:
+                exit(0);
+        else:
+            exit(0);
