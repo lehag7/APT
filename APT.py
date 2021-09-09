@@ -35,6 +35,8 @@ class APT:
                         self.displaySubTechniques();
                         if(self.SubTechniqueID in self.TTPData[self.TacticID]["Technique"][self.TechniqueID]["SubTechnique"]):
                             self.displayProcedures();
+                            ## Validate procedure number
+                            self.executeProcedure();
                         elif(self.SubTechniqueID == "E"):
                             print("Bye!");
                             exit(0);
@@ -43,6 +45,8 @@ class APT:
                             continue;
                     else:
                         self.displayProcedures();
+                        ## Validate procedure number
+                        self.executeProcedure();
                 elif(self.TechniqueID == "E"):
                     print("Bye!");
                     exit(0);
@@ -114,10 +118,28 @@ class APT:
             This method displays the Procedures available in the A.P.T framework.
         """
         print("[+] PROCEDURES");
-        for id in self.TTPData[self.TacticID]["Technique"][self.TechniqueID]["SubTechnique"][self.SubTechniqueID]["Procedure"]:
-            print("\t" + id + " : " + self.TTPData[self.TacticID]["Technique"][self.TechniqueID]["SubTechnique"][self.SubTechniqueID]["Procedure"][id]);
-        print("\tE - Exit");
-        self.ProcedureID = input("\n\tTTP>" + self.TacticID + ">" + self.TechniqueID + ">" + self.SubTechniqueID + ">");
+        if(self.SubTechniqueID != ""):
+            for id in self.TTPData[self.TacticID]["Technique"][self.TechniqueID]["SubTechnique"][self.SubTechniqueID]["Procedure"]:
+                print("\t" + id + " : " + self.TTPData[self.TacticID]["Technique"][self.TechniqueID]["SubTechnique"][self.SubTechniqueID]["Procedure"][id]);
+            print("\tE - Exit");
+            self.ProcedureID = input("\n\tTTP>" + self.TacticID + ">" + self.TechniqueID + ">" + self.SubTechniqueID + ">");
+            self.Commandline = self.TTPData[self.TacticID]["Technique"][self.TechniqueID]["SubTechnique"][self.SubTechniqueID]["Procedure"][self.ProcedureID];
+        else:
+            for id in self.TTPData[self.TacticID]["Technique"][self.TechniqueID]["Procedure"]:
+                print("\t" + id + " : " + self.TTPData[self.TacticID]["Technique"][self.TechniqueID]["Procedure"][id]);
+            print("\tE - Exit");
+            self.ProcedureID = input("\n\tTTP>" + self.TacticID + ">" + self.TechniqueID + ">");
+            self.Commandline = self.TTPData[self.TacticID]["Technique"][self.TechniqueID]["Procedure"][self.ProcedureID];
+
+    def executeProcedure(self):
+        """
+            This method executes the Procedures available in the A.P.T framework.
+        """
+        print("\n\t[+] Executing the procedure: " + self.Commandline + " \n");
+        try:
+            result = subprocess.run(self.Commandline);
+        except Exception as e:
+            print("\tError executing the procedure': " + str(e));
 
 if __name__ == "__main__":
     apt = APT();
