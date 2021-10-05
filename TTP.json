@@ -47,9 +47,29 @@
                             "Name": "Disable or Modify System Firewall",
                             "Description": "Adversaries may disable or modify system firewalls in order to bypass controls limiting network usage.",
                             "Procedure": {
+                                "000": "netsh.exe advfirewall set currentprofile state off"
+                                }
+                        }
+                    }
+                }
+        }
+    },
+
+    "TA0007": {
+        "Name": "Discovery",
+        "Description": "The adversary is trying to figure out your environment.",
+        "Technique": {
+                "T1518": {
+                    "Name": "Software Discovery",
+                    "Description": "Adversaries may attempt to get a listing of software and software versions that are installed on a system or in a cloud environment.",
+                    "SubTechnique": {
+                        "T1518.001": {
+                            "Name": "Security Software Discovery",
+                            "Description": "Adversaries may attempt to get a listing of security software, configurations, defensive tools, and sensors that are installed on a system or in a cloud environment.",
+                            "Procedure": {
                                 "000": "wmic.exe /namespace:\\\\root\\securitycenter2 path antivirusproduct",
                                 "001": "powershell.exe Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntivirusProduct",
-                                "002": "query \"HKLM\\SOFTWARE\\Microsoft\\Security Center\\Provider\\Av\" /s"
+                                "002": "reg.exe query \"HKLM\\SOFTWARE\\Microsoft\\Security Center\\Provider\\Av\" /s"
                                 }
                         }
                     }
